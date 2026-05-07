@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  priceCents  Int
+  category    String
+  filePath    String
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  orders      Order[]
+}
+
+model Order {
+  id             String    @id @default(cuid())
+  buyerEmail     String
+  buyerName      String
+  productId      String
+  product        Product   @relation(fields: [productId], references: [id])
+  status         String    @default("pending")
+  downloadToken  String?   @unique
+  tokenExpiresAt DateTime?
+  tokenUsed      Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+}
