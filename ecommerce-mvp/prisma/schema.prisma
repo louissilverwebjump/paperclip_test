@@ -19,6 +19,12 @@ model Product {
   orders      Order[]
 }
 
+model WaitlistEntry {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
 model Order {
   id             String    @id @default(cuid())
   buyerEmail     String
